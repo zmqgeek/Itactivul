@@ -25,7 +25,7 @@ test in bug report datasets
 ## Run Baselines
 
 ```
-  cd ./baselines
+cd ./baselines
   
-  python classification.py
+python classification.py
 ```
