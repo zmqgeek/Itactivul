@@ -22,7 +22,9 @@ test in bug report datasets
 
 ## Run Baselines
 
-(```)
+```
   cd ./baselines
+  
+  
   python classification.py
-(```)
+```
