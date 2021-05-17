@@ -19,49 +19,47 @@ parser.add_argument('--run', type=str, default='train',help='choose run way: tra
 args = parser.parse_args()
 
 if __name__ == '__main__':
-    dataset = 'tactical_word2vec_data'  # 数据集
+    dataset = 'tactical_word2vec_data'  # dataset
 
-    # 搜狗新闻:embedding_SougouNews.npz, 腾讯:embedding_Tencent.npz, 随机初始化:random
+    # embedding
     embedding = 'embedding_word2vec_archi.npz'
     if args.embedding == 'random':  
         embedding = 'random'
-    model_name = args.model  # 'TextRCNN'  # TextCNN, TextRNN, FastText, TextRCNN, TextRNN_Att, DPCNN, Transformer
+    model_name = args.model  # TextRNN_Att
     if model_name == 'FastText':
         from utils_fasttext import build_dataset, build_iterator, get_time_dif
         embedding = 'random'
     else:
         from utils import build_dataset, build_iterator, get_time_dif
  
-    # import_module() 动态导入模块
+    # import_module() 
     x = import_module('models.' + model_name)
-    # 将dataset名和embedding方式导入deep learning module配置参数类
     config = x.Config(dataset, embedding)
     
-    # 存储训练日志
+    # save train log
     logdir = config.log_path + '/'
     sys.stdout = Logger(logdir + "{}.log".format(args.model))
 
-    # 设置随机数
+    # set train random seed
     np.random.seed(1)
     torch.manual_seed(1)
     torch.cuda.manual_seed_all(1)
-    torch.backends.cudnn.deterministic = True  # 保证每次结果一样
+    torch.backends.cudnn.deterministic = True  
 
     start_time = time.time()
     print("Loading data...")
     
-    # 得到词汇表，以及数据
     vocab, train_data, dev_data, test_data = build_dataset(config, args.word)
     train_iter = build_iterator(train_data, config)
     dev_iter = build_iterator(dev_data, config)
     test_iter = build_iterator(test_data, config)
     
-    # 得到运行时间
+    # running time
     time_dif = get_time_dif(start_time)
     print("Time usage:", time_dif)
 
     # train
-    config.n_vocab = len(vocab) # 词表大小
+    config.n_vocab = len(vocab) # vocab size
     model = x.Model(config).to(config.device)
     init_network(model)
     print(model.parameters)
