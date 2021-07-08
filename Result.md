@@ -1,4 +1,4 @@
-## Performance of Itactivul compontent in bug report
+## Performance of Itactivul component in bug report detection
 
 |  Approach          | Chromium |         |        |            |    PHP   |           |        |            | Thunderbird |           |        |            |
 |--------------------|:--------:|:-------:|:------:|:----------:|:--------:|:---------:|:------:|:----------:|:-----------:|-----------|--------|------------|
